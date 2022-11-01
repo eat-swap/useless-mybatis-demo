@@ -22,7 +22,7 @@ CREATE TABLE tags (
 CREATE TABLE blogs (
                        id BIGINT AUTO_INCREMENT PRIMARY KEY UNIQUE,
                        author_id BIGINT NOT NULL,
-                       status TINYINT(1) NOT NULL,
+                       status TINYINT(2) NOT NULL,
                        FOREIGN KEY (author_id) REFERENCES authors(id)
 );
 
@@ -41,5 +41,12 @@ CREATE TABLE comments (
                           name TEXT NOT NULL,
                           post_id BIGINT NOT NULL,
                           FOREIGN KEY (post_id) REFERENCES posts(id)
+);
+
+CREATE TABLE post_tags (
+                           post_id BIGINT NOT NULL,
+                           tag_id BIGINT NOT NULL,
+                           FOREIGN KEY (post_id) REFERENCES posts(id),
+                           FOREIGN KEY (tag_id) REFERENCES tags(id)
 );
 ```
