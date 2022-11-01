@@ -22,7 +22,7 @@ CREATE TABLE tags (
 CREATE TABLE blogs (
                        id BIGINT AUTO_INCREMENT PRIMARY KEY UNIQUE,
                        author_id BIGINT NOT NULL,
-                       status TINYINT(2) NOT NULL,
+                       status TINYINT NOT NULL,
                        FOREIGN KEY (author_id) REFERENCES authors(id)
 );
 
