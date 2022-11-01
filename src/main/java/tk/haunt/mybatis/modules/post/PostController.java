@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tk.haunt.mybatis.modules.author.Author;
 import tk.haunt.mybatis.modules.author.AuthorMapper;
+import tk.haunt.mybatis.modules.blog.Blog;
+import tk.haunt.mybatis.modules.blog.BlogMapper;
 
 @RestController
 @RequestMapping("/v1/posts")
@@ -16,17 +18,11 @@ public class PostController {
     private SqlSessionFactory sqlSessionFactory;
 
     @GetMapping("/test")
-    public String test() {
-        var x = sqlSessionFactory.openSession();
-        var y = x.getMapper(AuthorMapper.class);
-        var w = new Author("+++5");
-        y.insertAuthor(w);
-        System.out.println(w.getId());
-        var z = y.findAuthor(w.getId());
-
-        y.findAll().forEach(o -> y.deleteAuthor(o.getId()));
-
-        return z.getName();
+    public Blog test() {
+        try (var s = sqlSessionFactory.openSession()) {
+            var ret = s.getMapper(BlogMapper.class).findBlogById(1);
+            return ret;
+        }
     }
 
 }

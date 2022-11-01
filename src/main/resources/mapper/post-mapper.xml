@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tk.haunt.mybatis.modules.post.PostMapper">
+    <select id="findById" parameterType="_long" resultMap="db_to_entity">
+        SELECT P.id as post_id,
+            P.title as post_title,
+            P.content as post_content,
+            P.blog_id as post_blog_id,
+            P.is_published as post_is_published,
+            C.id as comment_id,
+            C.content as comment_content,
+            C.name as comment_name,
+            T.id as tag_id,
+            T.tag as tag_name
+        FROM posts P
+            LEFT JOIN comments C ON P.id = C.post_id
+            LEFT JOIN post_tags PT ON P.id = PT.post_id
+            LEFT JOIN tags T ON PT.tag_id = T.id
+        WHERE P.id = #{id}
+    </select>
+    <select id="findByBlogId" parameterType="_long" resultMap="db_to_entity">
+        SELECT P.id as post_id,
+            P.title as post_title,
+            P.content as post_content,
+            P.blog_id as post_blog_id,
+            P.is_published as post_is_published,
+            C.id as comment_id,
+            C.content as comment_content,
+            C.name as comment_name,
+            T.id as tag_id,
+            T.tag as tag_name
+        FROM posts P
+            LEFT JOIN comments C ON P.id = C.post_id
+            LEFT JOIN post_tags PT ON P.id = PT.post_id
+            LEFT JOIN tags T ON PT.tag_id = T.id
+        WHERE P.blog_id = #{blogId}
+    </select>
+    <select id="findByTitle" parameterType="String" resultMap="db_to_entity">
+        SELECT P.id as post_id,
+            P.title as post_title,
+            P.content as post_content,
+            P.blog_id as post_blog_id,
+            P.is_published as post_is_published,
+            C.id as comment_id,
+            C.content as comment_content,
+            C.name as comment_name,
+            T.id as tag_id,
+            T.tag as tag_name
+        FROM posts P
+            LEFT JOIN comments C ON P.id = C.post_id
+            LEFT JOIN post_tags PT ON P.id = PT.post_id
+            LEFT JOIN tags T ON PT.tag_id = T.id
+        WHERE P.title = #{title}
+    </select>
+
+    <resultMap id="db_to_entity" type="tk.haunt.mybatis.modules.post.Post">
+        <id property="id" column="post_id"/>
+        <result property="title" column="post_title"/>
+        <result property="content" column="post_content"/>
+        <result property="blogId" column="post_blog_id"/>
+        <result property="published" column="post_is_published"/>
+        <collection property="comments" ofType="tk.haunt.mybatis.modules.comment.Comment">
+            <id property="id" column="comment_id"/>
+            <result property="content" column="comment_content"/>
+            <result property="name" column="comment_name"/>
+            <result property="postId" column="post_id"/>
+        </collection>
+        <collection property="tags" ofType="tk.haunt.mybatis.modules.tag.Tag">
+            <id property="id" column="tag_id"/>
+            <result property="tag" column="tag_name"/>
+        </collection>
+    </resultMap>
+
+    <insert id="insertPost" parameterType="tk.haunt.mybatis.modules.post.Post" useGeneratedKeys="true">
+        INSERT INTO posts (title, content, blog_id, is_published)
+        VALUES (#{title}, #{content}, #{blogId}, #{isPublished})
+    </insert>
+
+    <insert id="insertPostTag" parameterType="tk.haunt.mybatis.modules.post.Post">
+        INSERT INTO post_tags (post_id, tag_id)
+        VALUES
+        <foreach collection="tags" item="tag" separator=",">
+            (#{id}, #{tag.id})
+        </foreach>
+    </insert>
+
+    <update id="updatePost" parameterType="tk.haunt.mybatis.modules.post.Post">
+        UPDATE posts
+        SET title = #{title},
+            content = #{content},
+            blog_id = #{blogId},
+            is_published = #{isPublished}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deletePost" parameterType="_long">
+        DELETE FROM posts
+        WHERE id = #{id}
+    </delete>
+</mapper>

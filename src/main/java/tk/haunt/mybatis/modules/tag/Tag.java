@@ -1,5 +1,8 @@
 package tk.haunt.mybatis.modules.tag;
 
+import lombok.Data;
+
+@Data
 public class Tag {
 
     private long id;

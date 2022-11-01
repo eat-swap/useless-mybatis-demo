@@ -6,10 +6,10 @@ import org.apache.ibatis.annotations.*;
 public interface TagMapper {
 
     @Select("SELECT * FROM tags WHERE id = #{id}")
-    Tag findTag(long id);
+    Tag findTagById(long id);
 
     @Select("SELECT * FROM tags WHERE tag = #{tag}")
-    Tag findTag(String tag);
+    Tag findTagByTag(String tag);
 
     @Insert("INSERT INTO tags (tag) VALUES (#{tag})")
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")

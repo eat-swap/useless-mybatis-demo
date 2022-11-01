@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tk.haunt.mybatis.modules.blog.BlogMapper">
+    <select id="findBlogById" resultMap="blog_to_entity">
+        SELECT B.id as blog_id,
+            B.author_id as blog_author_id,
+            B.status as blog_status,
+            A.name as author_name
+        FROM blogs B
+            LEFT JOIN authors A ON B.author_id = A.id
+        WHERE B.id = #{id}
+    </select>
+
+    <resultMap id="blog_to_entity" type="tk.haunt.mybatis.modules.blog.Blog">
+        <id property="id" column="blog_id"/>
+        <result property="status"
+                column="blog_status"
+                typeHandler="tk.haunt.mybatis.modules.blog.BlogStatusTypeHandler"
+                javaType="tk.haunt.mybatis.modules.blog.BlogStatus"
+        />
+        <association property="author" javaType="tk.haunt.mybatis.modules.author.Author">
+            <id property="id" column="author_id"/>
+            <result property="name" column="author_name"/>
+        </association>
+        <association property="posts" select="tk.haunt.mybatis.modules.post.PostMapper.findByBlogId" column="blog_id"/>
+    </resultMap>
+
+</mapper>

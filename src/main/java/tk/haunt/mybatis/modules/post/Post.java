@@ -17,7 +17,7 @@ public class Post {
 
     private long blogId;
 
-    private boolean isPublished;
+    private boolean published;
 
     private List<Tag> tags;
 
