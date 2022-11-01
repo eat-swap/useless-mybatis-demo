@@ -11,4 +11,7 @@ spring:
       ddl-auto: create
     show-sql: true
 mybatis:
+  configuration:
+    aggressive-lazy-loading: true
+    lazy-loading-enabled: true
   mapper-locations: "classpath:mapper/*.xml"
