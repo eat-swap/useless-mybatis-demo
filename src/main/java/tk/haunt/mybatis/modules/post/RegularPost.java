@@ -1,6 +1,5 @@
 package tk.haunt.mybatis.modules.post;
 
-import tk.haunt.mybatis.modules.author.Author;
 import tk.haunt.mybatis.modules.comment.Comment;
 import tk.haunt.mybatis.modules.tag.Tag;
 
