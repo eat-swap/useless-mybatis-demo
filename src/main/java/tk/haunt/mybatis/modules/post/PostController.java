@@ -17,8 +17,8 @@ public class PostController {
     public String test() {
         var x = sqlSessionFactory.openSession();
         var y = x.getMapper(PostRepository.class);
-        y.findAll().forEach(System.out::println);
-        return "haha";
+        var z = y.findAll();
+        return z.size() + "";
     }
 
 }
